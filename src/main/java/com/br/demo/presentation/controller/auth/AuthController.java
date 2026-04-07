@@ -10,6 +10,8 @@ import com.br.demo.application.dto.output.user.UserOutput;
 import com.br.demo.application.usecase.auth.AuthenticateUserUseCase;
 import com.br.demo.application.usecase.user.RegisterUserUseCase;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,15 +31,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public UserOutput Register(@RequestBody RegisterUserInput input) {
-
-        return registerUserUseCase.execute(input);
+    public ResponseEntity<UserOutput> Register(@RequestBody @Valid RegisterUserInput input) {
+        return ResponseEntity.ok(registerUserUseCase.execute(input));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginOutput> login(@RequestBody LoginInput request) {
-        var response = authenticateUserUseCase.execute(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<LoginOutput> login(@RequestBody @Valid LoginInput input) {
+        return ResponseEntity.ok(authenticateUserUseCase.execute(input));
     }
 
     @GetMapping("/test")
